@@ -55,4 +55,7 @@ const app = appFactory(
   corsMiddleware
 );
 
+app.get("/", (req, res) => res.json({message: 'app is running'}));
+app.get("/*", (req, res) => res.json({message: 'endpoint not found'}));
+
 export default app;

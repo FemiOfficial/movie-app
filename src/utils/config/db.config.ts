@@ -2,7 +2,6 @@ import { DATABASE_URL, NODE_ENV } from "../../consts";
 import { DataSourceOptions } from "typeorm";
 
 const currentEnv = NODE_ENV;
-console.log(["production"].includes(currentEnv));
 const connectionOptions: DataSourceOptions = {
   type: "postgres",
   logging: true,

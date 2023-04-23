@@ -9,7 +9,7 @@ export const createCommentRouter = (
 ) => {
   const router = express.Router();
 
-  router.get("/comment", GetCommentValidatorSchema, controller.getComments);
-  router.post("/comment", AddCommentValidatorSchema, retrieveRequestIp, controller.addComment);
+  router.get("/comment/:movie_id", GetCommentValidatorSchema, controller.getComments);
+  router.post("/comment/:movie_id", AddCommentValidatorSchema, retrieveRequestIp, controller.addComment);
   return router;
 };

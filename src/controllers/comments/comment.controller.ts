@@ -16,7 +16,9 @@ export const CommentController = (
 ): ICommentController => {
   return {
     async getComments(req: Request, res: Response) {
-      const { page, limit, movie_id, sort_by } = req.query as Record<
+
+      const { movie_id } = req.params;
+      const { page, limit, sort_by } = req.query as Record<
         string,
         string
       >;
@@ -55,7 +57,7 @@ export const CommentController = (
     },
     async addComment(req: Request, res: Response) {
     
-      const [movieExists, fetchError] = await movieService.getMovie(req.body.movie_id, true);
+      const [movieExists, fetchError] = await movieService.getMovie(Number(req.params.movie_id), true);
 
       if (!movieExists || fetchError) throw new BadRequestException(fetchError.message)
 

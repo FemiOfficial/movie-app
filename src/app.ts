@@ -30,6 +30,7 @@ export const appFactory = (
   app.use(chractersRouter);
   app.use(commentsRouter);
 
+  
   app.use(BadRequestHandler);
   app.use(serverErrorHandler);
 
