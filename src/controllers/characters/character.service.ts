@@ -16,7 +16,7 @@ import {
   ICharacterResponseData,
 } from "./chracter.interface";
 
-export class CharacrerService {
+export class CharacterService {
   private readonly characterRepository;
 
   constructor(characterRepository: CharacterRepository) {

@@ -155,13 +155,18 @@ export type IComment = {
 
 export type ISwapApiClient = {
   getMovies: () => Promise<[IMovie[] | null, Error | null]>;
-  getMovie: () => Promise<[IMovie, Error]>;
+  getMovie: (id: number) => Promise<[IMovie, Error]>;
   getCharacters: () => Promise<[ICharacter[], Error]>;
   getCharacter: (id: number) => Promise<[ICharacter, Error]>;
 }
 
 export type IMovieController = {
   getMovies: (req: Request, res: Response, next: NextFunction) => void;
+};
+
+export type ICommentController = {
+  getComments: (req: Request, res: Response, next: NextFunction) => void;
+  addComment: (req: Request, res: Response, next: NextFunction) => void;
 };
 
 export type ICharactersController = {

@@ -5,7 +5,7 @@ export class NotFoundException extends Error {
 
   constructor(message: string) {
     super();
-    this.name = "SHORTURL_NOT_FOUND";
+    this.name = "RESOURCE_NOT_FOUND";
     this.message = message;
     this.status = HTTP.NOT_FOUND;
   }

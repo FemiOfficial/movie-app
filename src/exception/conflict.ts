@@ -5,7 +5,7 @@ export class ConflictException extends Error {
 
   constructor(message: string) {
     super();
-    this.name = "SHORTURL_CONFLICT";
+    this.name = "RESOURCE_CONFLICT";
     this.message = message;
     this.status = HTTP.CONFLICT;
   }

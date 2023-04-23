@@ -38,8 +38,24 @@ export const SwapApiClient = (
         return [null, error];
       }
     },
-    async getMovie(): Promise<[IMovie, Error]> {
-      throw "Not implemented";
+    async getMovie(id: number): Promise<[IMovie, Error]> {
+      try {
+        const request: IHttpRequest = {
+          hosturl: configHelper.getStringOrError(ConfigKeys.SWAP_BASE_URL),
+          endpoint: `${swapEndpoint.movie}/${id}`,
+          method: "get",
+        };
+
+        const response = await httpClient.send(request);
+
+        if (response.status !== HTTP.OK) {
+          throw response;
+        }
+        const movie = response.data as IMovie;
+        return [movie, null];
+      } catch (error) {
+        return [null, error];
+      }
     },
     async getCharacters(): Promise<[ICharacter[], Error]> {
       try {

@@ -1,25 +1,45 @@
-import { IResourceFilter } from "../types/common.types";
+import { IQueryOptions, IResourceFilter } from "../types/common.types";
 import AppDataSource from "../db/datasource";
 import { Comment } from "../entities/comment.entity";
 import { FindOptionsWhere } from "typeorm";
+import { DbTableName } from "../consts";
 
 export class CommentRepository {
   private readonly repository = AppDataSource.getRepository(Comment);
   async save(comment: Partial<Comment>): Promise<Comment | undefined> {
     return await this.repository.save(comment);
   }
-
-  async getComments(filter: IResourceFilter): Promise<Comment[] | undefined> {
-    return await this.repository.find({ where: this.getFilterQuery(filter) });
+  
+  async getCommentWithMovie(filter: IResourceFilter = {}, options: IQueryOptions = {}): Promise<Comment[] | undefined> {
+    return await this.repository
+      .createQueryBuilder(DbTableName.Comments)
+      .where(this.getFilterQuery(filter))
+      .orderBy({ 'comment.created_at': 'DESC'})
+      .limit(options.limit).offset(options.skip)
+      .getMany();
   }
 
-  async getCommentsCount(filter: IResourceFilter): Promise<number | undefined> {
+  async getComments(filter: IResourceFilter = {}, options: IQueryOptions = {}): Promise<Comment[] | undefined> {
+    return await this.repository
+      .createQueryBuilder(DbTableName.Comments)
+      .select('comment', 'created_at')
+      .where(this.getFilterQuery(filter))
+      .addSelect('ip')
+      .addSelect('id')
+      .addSelect('updated_at')
+      .orderBy({ created_at: 'DESC'})
+      .limit(options.limit).offset(options.skip)
+      .getMany();
+  }
+
+  async getCommentsCount(filter: IResourceFilter = {}): Promise<number | undefined> {
     return await this.repository.createQueryBuilder().where(this.getFilterQuery(filter)).getCount();
   }
 
   async getComment(filter: IResourceFilter) {
+    // return  await this.repository.createQueryBuilder().select('comment created_at ip id updated_at').where(this.getFilterQuery(filter))
     return await this.repository.findOne({
-      where: this.getFilterQuery(filter),
+      where: this.getFilterQuery(filter), select: ['comment','created_at', 'ip', 'id', 'updated_at'],
     });
   }
 

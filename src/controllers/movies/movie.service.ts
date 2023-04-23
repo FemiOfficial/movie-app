@@ -29,6 +29,35 @@ export class MovieService {
 
     this.swapClient = swapClient;
   }
+
+  async getMovie(id: number, internal = false): Promise<[IMovieResponse | null, Error]> {
+    try {
+      const [movieFromApi, apiError] = await this.swapClient.getMovie(id);
+
+      if (!movieFromApi) return [null, new Error("Invalid movie id")];
+      await this.cacheMovies([movieFromApi]);
+
+      let movieFromDb = (await this.movieRepository.getMovie({
+        movie_url_id: id,
+      })) as Movie;
+
+      const responseData: IMovieResponse = {
+        id: internal ? movieFromDb.id : movieFromDb.movie_url_id,
+        movie_url_id: internal ? movieFromDb.movie_url_id : undefined,
+        title: movieFromDb.title,
+        opening_crawl: movieFromDb.opening_crawl,
+        release_date: movieFromDb.release_date,
+        comments_count: await this.commentRepository.getCommentsCount({
+          movie_id: movieFromDb.id,
+        }),
+      };
+
+      return [responseData, null];
+    } catch (error) {
+      return [null, error];
+    }
+  }
+
   async getMovies(): Promise<[IMovieResponse[] | null, Error]> {
     try {
       const [moviesFromApi, apiError] = await this.swapClient.getMovies();
@@ -108,9 +137,6 @@ export class MovieService {
 
   private async cacheMovies(movies: IMovie[]) {
     for (let movie of movies) {
-      console.log(movie.url);
-      console.log(extractIdFromUrl(ResourcesType.Movies, movie.url));
-
       let dbMovie = await this.movieRepository.getMovie({
         movie_url_id: Number(extractIdFromUrl(ResourcesType.Movies, movie.url)),
       });

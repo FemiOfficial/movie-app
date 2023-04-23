@@ -12,7 +12,7 @@ export class CharacterRepository {
   );
 
 
-  async getCharacterCount(filter: IResourceFilter): Promise<number | undefined> {
+  async getCharacterCount(filter: IResourceFilter = {}): Promise<number | undefined> {
     return await this.repository.createQueryBuilder().where(this.getFilterQuery(filter)).getCount();
   }
 

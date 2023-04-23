@@ -7,7 +7,7 @@ export class CommentsMigration1682209880683 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TABLE "comment" (
       "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-      "comment" character(500) NOT NULL,
+      "comment" character varying(500) NOT NULL,
       "ip" character varying NOT NULL,
       "movie_id" uuid NOT NULL,
       "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
