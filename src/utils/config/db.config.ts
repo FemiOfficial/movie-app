@@ -2,6 +2,7 @@ import { DATABASE_URL, NODE_ENV } from "../../consts";
 import { DataSourceOptions } from "typeorm";
 
 const currentEnv = NODE_ENV;
+console.log(["production"].includes(currentEnv));
 const connectionOptions: DataSourceOptions = {
   type: "postgres",
   logging: true,
@@ -10,10 +11,10 @@ const connectionOptions: DataSourceOptions = {
   synchronize: false,
   migrationsRun: true,
   entities: ["production"].includes(currentEnv)
-    ? ["dist/src/**/*.entity.js"]
+    ? ["dist/**/*.entity.js"]
     : ["src/**/*.entity.ts"],
   migrations: ["production"].includes(currentEnv)
-    ? ["dist/src/db/migrations/*.js"]
+    ? ["dist/db/migrations/*.js"]
     : ["src/db/migrations/*.ts"],
 };
 

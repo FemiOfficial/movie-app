@@ -5,9 +5,9 @@ WORKDIR /app
 
 # Install app dependencies
 COPY package.json ./
-COPY yarn.lock ./
+COPY package-lock.json ./
 COPY .npmrc ./
-RUN yarn install
+RUN npm install
 
 # copy over source code
 COPY src ./src
@@ -15,10 +15,10 @@ COPY tsconfig.json ./tsconfig.json
 COPY tsconfig.build.json ./tsconfig.build.json
 
 # Build
-RUN yarn build
+RUN npm run build
 
 # Cleaning image
-RUN yarn global add node-prune
+RUN npm i -g node-prune
 RUN node-prune
 
 
@@ -29,4 +29,4 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
-CMD [ "yarn", "start:prod" ]
+CMD [ "npm", "run" "start:prod" ]
