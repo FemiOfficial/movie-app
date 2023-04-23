@@ -27,6 +27,9 @@ export type IDBConfig = {
 export const dbConfig: IDBConfig = {
   production: {
     ...connectionOptions,
+    ssl: {
+      rejectUnauthorized: false,
+    },
     url: DATABASE_URL,
   },
   development: {
