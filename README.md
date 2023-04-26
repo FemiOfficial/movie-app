@@ -1,7 +1,7 @@
-# URL Shorter Service
+# Movie app Service
 
 
-The url shorterner service is basically to generate short code for urls supplied to the service for this purpose
+The api fetches star war movie information from https://swapi.co and provides clients with functionality to add comments
 
 ### Features
 * 1. Fetch star wars movies
